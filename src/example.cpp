@@ -1,18 +1,21 @@
 #include "example.h"
 #include <ctime>
+#include "dataImporter.h"
 
 Example::Example(Renderer &renderer) : renderer(renderer)
 {
     points_start_index = 0;
     points_end_index = 0;
 
-    srand (static_cast <unsigned> (time(0)));
-    for (size_t i = 0; i < 15; i++)
-    {
-        float x = (float)rand() / (float)(RAND_MAX / renderer.getWindowSize().x);
-        float y = (float)rand() / (float)(RAND_MAX / renderer.getWindowSize().y);
-        points.push_back(Vector2 { x, y });
-    }
+    points = DataImporter::ImportPoints("points.txt");
+
+    // srand (static_cast <unsigned> (time(0)));
+    // for (size_t i = 0; i < 15; i++)
+    // {
+    //     float x = (float)rand() / (float)(RAND_MAX / renderer.getWindowSize().x);
+    //     float y = (float)rand() / (float)(RAND_MAX / renderer.getWindowSize().y);
+    //     points.push_back(Vector2 { x, y });
+    // }
 }
 
 Example::~Example()
@@ -36,7 +39,7 @@ void Example::RenderPointsAndLines()
     else if (points_end_index == points.size())
     {
         points_start_index++;
-        points_end_index = points_end_index + 1;
+        points_end_index = points_start_index + 1;
     }
 
     if (points_start_index < points.size())
