@@ -30,8 +30,10 @@ std::vector<Vector2> DataImporter::ImportPoints(std::string path)
         int x, y;
         if (!(iss >> x >> y)) { break; }
 
+        std::cout << "(" << x << ", " << y << ")" << std::endl;
         points.push_back(Vector2(x, y));
     }
+    file.close();
 
     return points;
 }
