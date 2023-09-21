@@ -1,6 +1,7 @@
 #include "example.h"
 #include <ctime>
 #include "dataImporter.h"
+#include <iostream>
 
 Example::Example(Renderer &renderer) : renderer(renderer)
 {
@@ -32,14 +33,13 @@ void Example::RenderPointsAndLines()
         renderer.DrawPointF(point, 5, Color::Black()); // Example for point drawing
     }
 
-    if (points_end_index < points.size())
+    if (points_end_index < points.size() - 1)
     {
         points_end_index++;
     }
-    else if (points_end_index == points.size())
+    else if (points_end_index == points.size() - 1)
     {
-        points_start_index++;
-        points_end_index = points_start_index + 1;
+        points_end_index = ++points_start_index + 1;
     }
 
     if (points_start_index < points.size())

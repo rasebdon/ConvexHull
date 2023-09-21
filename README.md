@@ -1,7 +1,7 @@
 # Windows Build Instructions
 ## Prerequisites
 * MinGW32
-* SDL2-2.28.3, 32 Bit MinGW Version (content of i686-w64-mingw32 folder)
+* SDL2-2.28.3, 32 Bit MinGW Version (if it does not compile, try the x64 version)
 * g++ Compiler
 * C++ 17
 

@@ -20,7 +20,7 @@ int main(int argc, char **argv)
         inputEventHandler.Handle();
 
         // Init frame
-        renderer.LimitFramerate(5);
+        renderer.LimitFramerate(2);
         renderer.Clear();
         
         // Draw here with renderer.DrawPointF or renderer.DrawLineF
