@@ -17,6 +17,10 @@ visual_r: visual
 visual: copy
 	$(CXX) $(CXXFLAGS) $(SRCS) $(INCLFLAGS) $(LDFLAGS) -o $(OUTPUT_DIR)\visual.exe
 
+test:
+	$(CXX) $(CXXFLAGS) ./tests/test.cpp -I src -I tests/ -o $(OUTPUT_DIR)\test.exe
+	.\$(OUTPUT_DIR)\test.exe
+
 copy:
 	xcopy /Y $(SDL2DIR)\bin\SDL2.dll $(OUTPUT_DIR)\
 
