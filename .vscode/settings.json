@@ -44,5 +44,12 @@
         "typeinfo": "cpp",
         "ctime": "cpp",
         "iostream": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "d:\\source\\repos\\ConvexHull\\out",
+            "binaryPath": "d:\\source\\repos\\ConvexHull\\out\\test.exe",
+            "binaryArgs": []
+        }
+    ]
 }
