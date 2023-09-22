@@ -18,7 +18,7 @@ visual: copy
 	$(CXX) $(CXXFLAGS) $(SRCS) $(INCLFLAGS) $(LDFLAGS) -o $(OUTPUT_DIR)/visual.exe
 
 test:
-	$(CXX) $(CXXFLAGS) ./tests/test.cpp -Isrc -Itests -o $(OUTPUT_DIR)/test.exe
+	$(CXX) $(CXXFLAGS) ./src/quickhull.cpp ./src/giftwrapping.cpp ./tests/test.cpp -Isrc -Itests -o $(OUTPUT_DIR)/test.exe
 	./$(OUTPUT_DIR)/test.exe
 
 copy:
