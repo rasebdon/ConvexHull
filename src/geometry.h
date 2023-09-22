@@ -16,6 +16,11 @@ struct Vector2
         this->x = x;
         this->y = y;
     }
+
+    bool operator==(const Vector2& other)
+    {
+        return other.x == x && other.y == y;
+    }
 };
 
 struct Line
