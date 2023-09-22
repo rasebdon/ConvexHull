@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         // Init frame
         renderer.LimitFramerate(2);
         renderer.Clear();
-        
+
         // Draw here with renderer.DrawPointF or renderer.DrawLineF
 
         // Example of how the draw functions are used:
