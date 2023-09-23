@@ -1,7 +1,21 @@
-#include "giftwrapping.h"
+#include "visualGiftwrapping.h"
 
-std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points)
+visualGiftwrapping::visualGiftwrapping(Renderer &renderer) : renderer(renderer)
 {
+
+}
+
+visualGiftwrapping::~visualGiftwrapping()
+{
+    
+}
+
+std::vector<std::vector<Line>> visualGiftwrapping::Execute(const std::vector<Vector2> &points)
+{
+    std::vector<Line> testLines;
+    std::vector<Line> hullLines;
+    std::vector<std::vector<Line>> lineList;
+
     int n = points.size();
 
     std::vector<Vector2> convexHull;
@@ -20,13 +34,20 @@ std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points)
         
         for (int i = 0; i < n; ++i) {
             // Wenn der i-te Punkt links von der Linie zwischen current und next liegt
+            Line line(points[current], points[i]);
+            testLines.push_back(line);
             if (Vector2::crossProduct(points[current], points[next], points[i]) > 0) {
                 next = i;
             }
         }
-        
+
+        Line line(points[current], points[next]);
+        hullLines.push_back(line);
         current = next;
+        lineList.push_back(testLines);
+        testLines.clear();
     } while (current != startPoint);
-    
-    return convexHull;
+
+    lineList.push_back(hullLines);
+    return lineList;
 }

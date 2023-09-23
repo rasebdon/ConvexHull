@@ -2,7 +2,7 @@
 #include "inputEventHandler.h"
 #include "geometry.h"
 #include "dataImporter.h"
-#include "giftwrapping.h"
+#include "visualGiftwrapping.h"
 #include <iostream>
 
 #include "example.h"
@@ -13,10 +13,7 @@ int main(int argc, char **argv)
     Renderer renderer = Renderer(800, 800);
     InputEventHandler inputEventHandler = InputEventHandler();
 
-    // Example usage class
-    Example example(renderer);
-
-    giftwrapping gift(renderer);
+    visualGiftwrapping gift(renderer);
 
     std::vector<Vector2> points;
     srand (static_cast <unsigned> (time(0)));
@@ -32,8 +29,7 @@ int main(int argc, char **argv)
     int list = 0;
     int listSize = 0;
 
-
-    std::vector<std::vector<Line>> lineList = gift.ExecuteVisual(points);
+    std::vector<std::vector<Line>> lineList = gift.Execute(points);
 
     int size = lineList.size();
 
@@ -49,7 +45,7 @@ int main(int argc, char **argv)
         inputEventHandler.Handle();
 
         // Init frame
-        renderer.LimitFramerate(2);
+        renderer.LimitFramerate(4);
         renderer.Clear();
 
         // Draw here with renderer.DrawPointF or renderer.DrawLineF
@@ -69,7 +65,7 @@ int main(int argc, char **argv)
 
         for(int k = 0; k <= i; k++)
         {
-            renderer.DrawLineF(testLines[k], 2, Color::Red());
+            renderer.DrawLineF(testLines[k], 2, Color::Blue());
         }
 
         if(i >= listSize)
