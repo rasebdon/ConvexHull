@@ -1,13 +1,20 @@
 #include "renderer.h"
 
-void Renderer::SetRenderDrawColor(Color color) const
+void Renderer::SetRenderDrawColor(const Color& color) const
 {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 }
 
-void Renderer::SetRenderScale(float scale) const
+void Renderer::SetRenderScale(const float& scale) const
 {
     SDL_RenderSetScale(renderer, scale, scale);
+}
+
+Color Renderer::GetRenderDrawColor() const
+{
+    Uint8 r, g, b, a;
+    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    return Color(r, g, b, a);
 }
 
 Renderer::Renderer(size_t width, size_t height)
@@ -54,9 +61,13 @@ void Renderer::DrawPointF(Vector2 position, float pt, Color color) const
 
 void Renderer::DrawPointF(float x, float y, float pt, Color color) const
 {
+    Color oldColor = GetRenderDrawColor();
+
     SetRenderDrawColor(color);
     SetRenderScale(pt);
     SDL_RenderDrawPointF(renderer, x / pt, y / pt);
+
+    SetRenderDrawColor(oldColor);
     SetRenderScale(1);
 }
 
@@ -67,8 +78,12 @@ void Renderer::DrawLineF(Line line, float pt, Color color) const
 
 void Renderer::DrawLineF(float x1, float y1, float x2, float y2, float pt, Color color) const
 {
+    Color oldColor = GetRenderDrawColor();
+
     SetRenderDrawColor(color);
     SetRenderScale(pt);
     SDL_RenderDrawLineF(renderer, x1 / pt, y1 / pt, x2 / pt, y2 / pt);
+
+    SetRenderDrawColor(oldColor);
     SetRenderScale(1);
 }

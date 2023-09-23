@@ -1,5 +1,10 @@
 #include "giftwrapping.h"
 
+std::string giftwrapping::getName() const
+{
+    return "giftwrapping";
+}
+
 std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points) const
 {
     int n = points.size();

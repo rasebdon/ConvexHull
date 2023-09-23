@@ -88,7 +88,7 @@ std::vector<Vector2> getPoints(const programOptions& options, const Renderer* re
     }
     else
     {
-        size_t amount = 15;
+        size_t amount = 50;
         if (options.hasArg("--points"))
             amount = std::stoull(options.getArg("--points"));
 
@@ -116,7 +116,7 @@ void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorith
     hull = algo.Execute(points);
     auto finish = std::chrono::high_resolution_clock::now();
 
-    std::cout << "Calculated convex hull of " << points.size() << " points with " << typeid(algo).name() << ":" << std::endl;
+    std::cout << "Calculated convex hull of " << points.size() << " points with " << algo.getName() << ":" << std::endl;
     for (auto point : hull)
     {
         std::cout << point.toString() << std::endl;
@@ -152,17 +152,14 @@ void renderAlgorithm(
         inputEventHandler.Handle();
 
         // Init frame
-        renderer.LimitFramerate(4);
+        renderer.LimitFramerate(10);
         renderer.Clear();
 
         // Draw here with renderer.DrawPointF or renderer.DrawLineF
-
-        // Example of how the draw functions are used:
-        // example.RenderPointsAndLines();
         for (std::vector<Vector2>::const_iterator i = points.begin(); i != points.end(); ++i)
         {
             Vector2 point = *i;
-            renderer.DrawPointF(point, 5, Color::Black()); // Example for point drawing
+            renderer.DrawPointF(point, 5, Color::Black());
         }
 
         for (int j = 0; j <= drawNumber; j++)

@@ -9,8 +9,9 @@ private:
     SDL_Renderer *renderer;
     SDL_Window *window;
 
-    void SetRenderDrawColor(Color color) const;
-    void SetRenderScale(float scale) const;
+    Color GetRenderDrawColor() const;
+    void SetRenderDrawColor(const Color& color) const;
+    void SetRenderScale(const float& scale) const;
 public:
     Renderer(size_t width, size_t height);
     ~Renderer();
