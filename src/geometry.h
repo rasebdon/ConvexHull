@@ -21,6 +21,11 @@ struct Vector2
     {
         return other.x == x && other.y == y;
     }
+
+    static int crossProduct(const Vector2& A, const Vector2& B, const Vector2& C)
+    {
+        return (B.x - A.x) * (C.y - A.y) - (B.y - A.y) * (C.x - A.x);
+    }
 };
 
 struct Line

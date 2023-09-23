@@ -2,11 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C++ Launch Visual",
+            "name": "C++ Launch Giftwrapping Visual",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/visual.exe",
-            "args": [],
+            "program": "${workspaceFolder}/out/convexHull.exe",
+            "args": [ "-algo", "giftwrapping", "-type", "visual" ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
@@ -20,7 +20,7 @@
             "windows": {
                 "MIMode": "gdb"
             },
-            "preLaunchTask": "C/C++: make visual"
+            "preLaunchTask": "C/C++: make convexHull"
         },
         {
             "name": "C++ Launch Tests",
