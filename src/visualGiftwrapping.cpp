@@ -1,15 +1,5 @@
 #include "visualGiftwrapping.h"
 
-visualGiftwrapping::visualGiftwrapping(Renderer &renderer) : renderer(renderer)
-{
-
-}
-
-visualGiftwrapping::~visualGiftwrapping()
-{
-    
-}
-
 std::vector<std::vector<Line>> visualGiftwrapping::Execute(const std::vector<Vector2> &points)
 {
     std::vector<Line> testLines;

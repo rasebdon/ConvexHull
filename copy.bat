@@ -1,0 +1,1 @@
+xcopy "lib\SDL2\bin\SDL2.dll" "out" /Y
