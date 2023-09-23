@@ -3,28 +3,33 @@
 
 programOptions::programOptions(int argc, char **argv)
 {
-    if ((argc - 1) % 2 != 0)
-        throw std::runtime_error("Invalid parameter count!");
-
     for (int i = 1; i < argc;)
     {
         std::string curIdentifier = argv[i++];
-        std::string curValue = argv[i++];
+
+        std::string curValue = "";
+        if (curIdentifier.find("--") != std::string::npos)
+            curValue = argv[i++];
 
         args[curIdentifier] = curValue;
     }
     
 }
 
-std::string programOptions::getArg(const std::string &key)
+std::string programOptions::getArg(const std::string &key) const
 {
     try
     {
-        return args[key];
+        return args.at(key);
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
         return "";
     }
+}
+
+bool programOptions::hasArg(const std::string &key) const
+{
+    return args.find(key) != args.end();
 }

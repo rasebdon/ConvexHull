@@ -1,6 +1,6 @@
 #include "giftwrapping.h"
 
-std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points)
+std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points) const
 {
     int n = points.size();
 

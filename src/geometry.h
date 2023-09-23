@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 struct Vector2
 {
@@ -17,7 +18,7 @@ struct Vector2
         this->y = y;
     }
 
-    bool operator==(const Vector2& other)
+    bool operator==(const Vector2& other) const
     {
         return other.x == x && other.y == y;
     }
@@ -25,6 +26,11 @@ struct Vector2
     static int crossProduct(const Vector2& A, const Vector2& B, const Vector2& C)
     {
         return (B.x - A.x) * (C.y - A.y) - (B.y - A.y) * (C.x - A.x);
+    }
+
+    std::string toString() const
+    {
+        return std::string("(").append(std::to_string(x)).append(", ").append(std::to_string(y)).append(")");
     }
 };
 

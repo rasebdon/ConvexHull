@@ -1,6 +1,6 @@
 #include "visualGiftwrapping.h"
 
-std::vector<std::vector<Line>> visualGiftwrapping::Execute(const std::vector<Vector2> &points)
+std::vector<std::vector<Line>> visualGiftwrapping::Execute(const std::vector<Vector2> &points) const
 {
     std::vector<Line> testLines;
     std::vector<Line> hullLines;

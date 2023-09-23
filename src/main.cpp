@@ -1,4 +1,7 @@
 #include <iostream>
+#include <memory>
+#include <chrono>
+
 #include "renderer.h"
 #include "inputEventHandler.h"
 #include "geometry.h"
@@ -11,90 +14,123 @@
 
 #include "programOptions.h"
 
-void performanceTestAlgorithm(const std::vector<Vector2>& points, algorithm& algo);
+void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorithm &algo);
 void renderAlgorithm(
-    const Renderer& renderer,
-    InputEventHandler& inputEventHandler,
-    const std::vector<Vector2>& points,
-    visualAlgorithm& visualAlgorithm);
+    const Renderer &renderer,
+    InputEventHandler &inputEventHandler,
+    const std::vector<Vector2> &points,
+    const visualAlgorithm &visualAlgorithm);
+std::vector<Vector2> getPoints(const programOptions& options, const Renderer* renderer = nullptr);
 
 int main(int argc, char **argv)
 {
     programOptions options = programOptions(argc, argv);
 
-    auto type = options.getArg("-type");
-    auto algorithmType = options.getArg("-algo");
-
-    // Setup rendering and input handler
-    Renderer renderer = Renderer(800, 800);
-    InputEventHandler inputEventHandler = InputEventHandler();
-
-    // Import or generate points
-    std::vector<Vector2> points;
-
-    // TODO: Import points command line option
-
-    srand (static_cast <unsigned> (time(0)));
-    for (size_t i = 0; i < 15; i++)
+    if (options.hasArg("-h") || options.hasArg("-?"))
     {
-        float x = (float)rand() / (float)(RAND_MAX / renderer.getWindowSize().x);
-        float y = (float)rand() / (float)(RAND_MAX / renderer.getWindowSize().y);
-        points.push_back(Vector2 { x, y });
+        std::cout << "Usage: convexHull.exe --type [performance | visual] --algo [giftwrapping | quickhull] [--import [path]] [--points [amount]]" << std::endl;
+        return 0;
+    }
+
+    std::string type = options.getArg("--type");
+    bool isVisual = type == "visual";
+    if (type != "performance" && type != "visual")
+    {
+        std::cerr << "Invalid run type provided! Options are \"performance\" and \"visual\"" << std::endl;
+    }
+
+    std::string algorithmType = options.getArg("--algo");
+    if (algorithmType != "giftwrapping" && algorithmType != "quickhull")
+    {
+        std::cerr << "Invalid algorithm provided! Options are \"giftwrapping\" and \"quickhull\"" << std::endl;
+        return 1;
     }
 
     // Start algorithm in visual or performance mode
-    if (type == "visual")
+    if (isVisual)
     {
+        // Setup rendering and input handler
+        Renderer renderer = Renderer(800, 800);
+        InputEventHandler inputEventHandler = InputEventHandler();
+
+        // Create algorithm
+        std::unique_ptr<visualAlgorithm> visualAlgo;
         if (algorithmType == "giftwrapping")
-        {
-            visualGiftwrapping visualGift = visualGiftwrapping();
-            renderAlgorithm(renderer, inputEventHandler, points, visualGift);
-        }
+            visualAlgo = std::make_unique<visualGiftwrapping>();
         else if (algorithmType == "quickhull")
-        {
-            visualQuickhull visualQuick = visualQuickhull();
-            renderAlgorithm(renderer, inputEventHandler, points, visualQuick);
-        }
-        else 
-        {
-            std::cerr << "Invalid algorithm provided! Options are \"giftwrapping\" and \"quickhull\"" << std::endl;
-        }
+            visualAlgo = std::make_unique<visualQuickhull>();
+
+        renderAlgorithm(renderer, inputEventHandler, getPoints(options, &renderer), *visualAlgo);
     }
-    else if (type == "performance")
-    {
+    else
+    {        
+        // Create algorithm
+        std::unique_ptr<algorithm> algo;
         if (algorithmType == "giftwrapping")
-        {
-            giftwrapping gift = giftwrapping();
-            performanceTestAlgorithm(points, gift);
-        }
+            algo = std::make_unique<giftwrapping>();
         else if (algorithmType == "quickhull")
-        {
-            quickhull quick = quickhull();
-            performanceTestAlgorithm(points, quick);
-        }
-        else 
-        {
-            std::cerr << "Invalid algorithm provided! Options are \"giftwrapping\" and \"quickhull\"" << std::endl;
-        }
-    }
-    else 
-    {
-        std::cerr << "Invalid run type provided! Options are \"performance\" and \"visual\"" << std::endl;
+            algo = std::make_unique<quickhull>();
+
+        performanceTestAlgorithm(getPoints(options), *algo);
     }
 
     return 0;
 }
 
-void performanceTestAlgorithm(const std::vector<Vector2>& points, algorithm& algo)
+std::vector<Vector2> getPoints(const programOptions& options, const Renderer* renderer)
 {
+    // Import or generate points
+    std::vector<Vector2> points;
 
+    if (options.hasArg("--import"))
+    {
+        points = DataImporter::ImportPoints(options.getArg("--import"));
+    }
+    else
+    {
+        size_t amount = 15;
+        if (options.hasArg("--points"))
+            amount = std::stoull(options.getArg("--points"));
+
+        Vector2 bounds = Vector2(1000, 1000);        
+        if (renderer != nullptr)
+            bounds = renderer->getWindowSize();
+
+        srand(static_cast<unsigned>(time(0)));
+        for (size_t i = 0; i < amount; i++)
+        {
+            float x = (float)rand() / (float)(RAND_MAX / bounds.x);
+            float y = (float)rand() / (float)(RAND_MAX / bounds.y);
+            points.push_back(Vector2{x, y});
+        }
+    }
+    
+    return points;
+}
+
+void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorithm &algo)
+{
+    std::vector<Vector2> hull;
+    
+    auto start = std::chrono::high_resolution_clock::now();
+    hull = algo.Execute(points);
+    auto finish = std::chrono::high_resolution_clock::now();
+
+    std::cout << "Calculated convex hull of " << points.size() << " points with " << typeid(algo).name() << ":" << std::endl;
+    for (auto point : hull)
+    {
+        std::cout << point.toString() << std::endl;
+    }
+
+    auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish-start);
+    std::cout << "Calculation time: " << microseconds.count() << " microseconds" << std::endl;
 }
 
 void renderAlgorithm(
-    const Renderer& renderer,
-    InputEventHandler& inputEventHandler,
-    const std::vector<Vector2>& points,
-    visualAlgorithm& visualAlgorithm)
+    const Renderer &renderer,
+    InputEventHandler &inputEventHandler,
+    const std::vector<Vector2> &points,
+    const visualAlgorithm &visualAlgorithm)
 {
     int i = 0;
     int drawNumber = -1;
@@ -107,7 +143,7 @@ void renderAlgorithm(
 
     std::vector<Line> testLines = lineList[list];
     listSize = testLines.size() - 1;
-    std::vector<Line> hullLines = lineList[size-1];
+    std::vector<Line> hullLines = lineList[size - 1];
 
     // Render loop
     while (!inputEventHandler.quit)
@@ -122,7 +158,7 @@ void renderAlgorithm(
         // Draw here with renderer.DrawPointF or renderer.DrawLineF
 
         // Example of how the draw functions are used:
-        //example.RenderPointsAndLines();
+        // example.RenderPointsAndLines();
         for (std::vector<Vector2>::const_iterator i = points.begin(); i != points.end(); ++i)
         {
             Vector2 point = *i;
@@ -134,12 +170,12 @@ void renderAlgorithm(
             renderer.DrawLineF(hullLines[j], 2, Color::Red());
         }
 
-        for(int k = 0; k <= i; k++)
+        for (int k = 0; k <= i; k++)
         {
             renderer.DrawLineF(testLines[k], 2, Color::Blue());
         }
 
-        if(i >= listSize)
+        if (i >= listSize)
         {
             i = 0;
             drawNumber++;

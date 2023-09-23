@@ -24,7 +24,7 @@ Renderer::~Renderer()
     SDL_Quit();
 }
 
-Vector2 Renderer::getWindowSize()
+Vector2 Renderer::getWindowSize() const
 {
     int w, h;
     SDL_GetWindowSize(window, &w, &h);

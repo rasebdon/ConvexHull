@@ -11,11 +11,17 @@ LDFLAGS = -L $(SDL2DIR)\\lib -lmingw32 -lSDL2main -lSDL2
 
 SRCS = $(SRC_DIR)\\*.cpp
 
+quickhull_visual: convexHull
+	.\\$(OUTPUT_DIR)\convexHull.exe --type visual --algo quickhull
+
+quickhull: convexHull
+	.\\$(OUTPUT_DIR)\convexHull.exe --type performance --algo quickhull
+
 giftwrapping_visual: convexHull
-	.\\$(OUTPUT_DIR)\convexHull.exe -type performance -algo giftwrapping
+	.\\$(OUTPUT_DIR)\convexHull.exe --type visual --algo giftwrapping
 
 giftwrapping: convexHull
-	.\\$(OUTPUT_DIR)\convexHull.exe -type visual -algo giftwrapping
+	.\\$(OUTPUT_DIR)\convexHull.exe --type performance --algo giftwrapping
 
 convexHull: copy
 	$(CXX) $(CXXFLAGS) $(SRCS) $(INCLFLAGS) $(LDFLAGS) -o $(OUTPUT_DIR)\\convexHull.exe

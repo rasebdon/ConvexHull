@@ -6,7 +6,70 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/out/convexHull.exe",
-            "args": [ "-algo", "giftwrapping", "-type", "visual" ],
+            "args": [ "--algo", "giftwrapping", "--type", "visual" ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            },
+            "preLaunchTask": "C/C++: make convexHull"
+        },
+        {
+            "name": "C++ Launch Giftwrapping Performance",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/convexHull.exe",
+            "args": [ "--algo", "giftwrapping", "--type", "performance" ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            },
+            "preLaunchTask": "C/C++: make convexHull"
+        },
+        {
+            "name": "C++ Launch Quickhull Visual",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/convexHull.exe",
+            "args": [ "--algo", "quickhull", "--type", "visual" ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            },
+            "preLaunchTask": "C/C++: make convexHull"
+        },
+        {
+            "name": "C++ Launch Quickhull Performance",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/convexHull.exe",
+            "args": [ "--algo", "quickhull", "--type", "performance" ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],

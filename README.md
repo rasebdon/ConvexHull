@@ -10,6 +10,15 @@
 * For visual executable run: "make visual"
 * For performance evaluation executable run: "make performance"
 
+# Usage
+
+convexHull.exe --type [performance | visual] --algo [giftwrapping | quickhull] --import [path=NULL] --points [amount=15]
+
+--type: The runtime type, must be either performance or visual
+--algo: The algorithm that will be run, must be either giftwrapping or quickhull
+--import: Optional parameter to import a point file
+--points: Optional parameter to randomly generate the given amount of points
+
 # Algorithms
 
 ## Quickhull

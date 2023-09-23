@@ -8,5 +8,6 @@ private:
     std::map<std::string, std::string> args;
 public:
     programOptions(int argc, char **argv);
-    std::string getArg(const std::string& key);
+    std::string getArg(const std::string& key) const;
+    bool hasArg(const std::string& key) const;
 };

@@ -15,7 +15,7 @@ public:
     Renderer(size_t width, size_t height);
     ~Renderer();
 
-    Vector2 getWindowSize();
+    Vector2 getWindowSize() const;
     void LimitFramerate(int fps) const;
 
     /// @brief Called to clear the current rendered window
