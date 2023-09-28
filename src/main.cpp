@@ -152,7 +152,7 @@ void renderAlgorithm(
         inputEventHandler.Handle();
 
         // Init frame
-        renderer.LimitFramerate(10);
+        renderer.LimitFramerate(5);
         renderer.Clear();
 
         // Draw here with renderer.DrawPointF or renderer.DrawLineF
@@ -174,16 +174,19 @@ void renderAlgorithm(
                 renderer.DrawLineF(testLines[k], 2, Color::Blue());
             }
 
-            if (i >= listSize)
+            if (inputEventHandler.keyboard[SDL_KeyCode::SDLK_RIGHT])
             {
-                i = 0;
-                drawNumber++;
-                testLines = lineList[++list];
-                listSize = testLines.size() - 1;
-            }
-            else
-            {
-                i++;
+                if (i >= listSize)
+                {
+                    i = 0;
+                    drawNumber++;
+                    testLines = lineList[++list];
+                    listSize = testLines.size() - 1;
+                }
+                else
+                {
+                    i++;
+                }
             }
         }
 

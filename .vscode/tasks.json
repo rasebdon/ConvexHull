@@ -2,10 +2,10 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: make convexHull",
+            "label": "C/C++: make convexhull_debug",
             "command": "make",
             "args": [
-                "convexHull"
+                "convexhull_debug"
             ],
             "group": {
                 "kind": "build",

@@ -5,7 +5,7 @@
             "name": "C++ Launch Giftwrapping Visual",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/convexHull.exe",
+            "program": "${workspaceFolder}/out/convexhull_debug.exe",
             "args": [ "--algo", "giftwrapping", "--type", "visual" ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -20,13 +20,13 @@
             "windows": {
                 "MIMode": "gdb"
             },
-            "preLaunchTask": "C/C++: make convexHull"
+            "preLaunchTask": "C/C++: make convexhull_debug"
         },
         {
             "name": "C++ Launch Giftwrapping Performance",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/convexHull.exe",
+            "program": "${workspaceFolder}/out/convexhull_debug.exe",
             "args": [ "--algo", "giftwrapping", "--type", "performance" ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -41,13 +41,13 @@
             "windows": {
                 "MIMode": "gdb"
             },
-            "preLaunchTask": "C/C++: make convexHull"
+            "preLaunchTask": "C/C++: make convexhull_debug"
         },
         {
             "name": "C++ Launch Quickhull Visual",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/convexHull.exe",
+            "program": "${workspaceFolder}/out/convexhull_debug.exe",
             "args": [ "--algo", "quickhull", "--type", "visual" ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -62,13 +62,13 @@
             "windows": {
                 "MIMode": "gdb"
             },
-            "preLaunchTask": "C/C++: make convexHull"
+            "preLaunchTask": "C/C++: make convexhull_debug"
         },
         {
             "name": "C++ Launch Quickhull Performance",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/convexHull.exe",
+            "program": "${workspaceFolder}/out/convexhull_debug.exe",
             "args": [ "--algo", "quickhull", "--type", "performance" ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -83,7 +83,7 @@
             "windows": {
                 "MIMode": "gdb"
             },
-            "preLaunchTask": "C/C++: make convexHull"
+            "preLaunchTask": "C/C++: make convexhull_debug"
         },
         {
             "name": "C++ Launch Tests",

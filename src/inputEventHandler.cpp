@@ -20,5 +20,11 @@ void InputEventHandler::Handle()
     case SDL_QUIT:
         this->quit = true;
         break;
+    case SDL_KEYDOWN:
+        keyboard[event.key.keysym.sym] = true;
+        break;
+    case SDL_KEYUP:
+        keyboard[event.key.keysym.sym] = false;
+        break;
     }
 }
