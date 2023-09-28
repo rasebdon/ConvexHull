@@ -31,7 +31,7 @@ test:
 	.\\$(OUTPUT_DIR)\\test.exe
 
 copy:
-	./copy.bat
+	.\\copy.bat
 
 clean:
-	./del.bat
+	.\\del.bat

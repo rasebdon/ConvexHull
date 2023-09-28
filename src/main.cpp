@@ -88,7 +88,7 @@ std::vector<Vector2> getPoints(const programOptions& options, const Renderer* re
     }
     else
     {
-        size_t amount = 50;
+        size_t amount = 10;
         if (options.hasArg("--points"))
             amount = std::stoull(options.getArg("--points"));
 
@@ -167,21 +167,24 @@ void renderAlgorithm(
             renderer.DrawLineF(hullLines[j], 2, Color::Red());
         }
 
-        for (int k = 0; k <= i; k++)
+        if (drawNumber <= ((int)hullLines.size()))
         {
-            renderer.DrawLineF(testLines[k], 2, Color::Blue());
-        }
+            for (int k = 0; k <= i; k++)
+            {
+                renderer.DrawLineF(testLines[k], 2, Color::Blue());
+            }
 
-        if (i >= listSize)
-        {
-            i = 0;
-            drawNumber++;
-            testLines = lineList[++list];
-            listSize = testLines.size() - 1;
-        }
-        else
-        {
-            i++;
+            if (i >= listSize)
+            {
+                i = 0;
+                drawNumber++;
+                testLines = lineList[++list];
+                listSize = testLines.size() - 1;
+            }
+            else
+            {
+                i++;
+            }
         }
 
         // Render the prepared frame
