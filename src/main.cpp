@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <chrono>
 
@@ -21,6 +22,7 @@ void renderAlgorithm(
     const std::vector<Vector2> &points,
     const visualAlgorithm &visualAlgorithm);
 std::vector<Vector2> getPoints(const programOptions& options, const Renderer* renderer = nullptr);
+std::string thousandSeperator(long long num);
 
 int main(int argc, char **argv)
 {
@@ -123,7 +125,25 @@ void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorith
     }
 
     auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish-start);
-    std::cout << "Calculation time: " << microseconds.count() << " microseconds" << std::endl;
+    std::cout << "Calculation time: " << thousandSeperator(microseconds.count()) << " microseconds" << std::endl;
+
+    // Write result to file
+    std::ofstream outfile;
+    outfile.open("results_" + algo.getName() + ".txt", std::ios_base::app);
+    outfile << "n=" << points.size() << ", ms=" << microseconds.count() << std::endl; 
+}
+
+std::string thousandSeperator(long long n)
+{
+	std::string result = std::to_string(n);
+	if (result.length() > 3)
+	{
+		for (int i = result.length() - 3; i > 0; i -= 3)
+		{
+			result.insert(i, ".");
+		}
+	}
+	return result;
 }
 
 void renderAlgorithm(
