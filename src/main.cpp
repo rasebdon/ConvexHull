@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 
     if (options.hasArg("-h") || options.hasArg("-?"))
     {
-        std::cout << "Usage: convexHull.exe --type [performance | visual] --algo [giftwrapping | quickhull] [--import [path]] [--points [amount]]" << std::endl;
+        std::cout << "Usage: convexhull.exe --type [performance | visual] --algo [giftwrapping | quickhull] [--import [path]] [--points [amount]] [--iterations [amount]] [--output [true | false]]" << std::endl;
         return 0;
     }
 

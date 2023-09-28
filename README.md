@@ -7,8 +7,8 @@
 
 ## Step by step guide
 * Copy the contents of the 32 Bit MinGW library into the lib/SDL2 folder
-* For visual executable run: "make visual"
-* For performance evaluation executable run: "make performance"
+* To create the executable file, run "make convexhull"
+* Try the execution with the following command: "./convexhull.exe --type performance --algo giftwrapping --output true"
 
 # Usage
 
