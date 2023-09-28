@@ -128,9 +128,16 @@ void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorith
     std::cout << "Calculation time: " << thousandSeperator(microseconds.count()) << " microseconds" << std::endl;
 
     // Write result to file
-    std::ofstream outfile;
-    outfile.open("results_" + algo.getName() + ".txt", std::ios_base::app);
-    outfile << "n=" << points.size() << ", ms=" << microseconds.count() << std::endl; 
+    std::string fileName = "results.csv";
+    std::ifstream resultsInput(fileName);
+    bool exists = resultsInput.good() && resultsInput.peek() != std::ifstream::traits_type::eof();
+
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+
+    if (!exists)
+        file << "algo,n,ms" << std::endl;
+    file << algo.getName() << "," << points.size() << "," << microseconds.count() << std::endl; 
 }
 
 std::string thousandSeperator(long long n)
