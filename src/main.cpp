@@ -15,7 +15,7 @@
 
 #include "programOptions.h"
 
-void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorithm &algo);
+void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorithm &algo, bool output);
 void renderAlgorithm(
     const Renderer &renderer,
     InputEventHandler &inputEventHandler,
@@ -73,7 +73,14 @@ int main(int argc, char **argv)
         else if (algorithmType == "quickhull")
             algo = std::make_unique<quickhull>();
 
-        performanceTestAlgorithm(getPoints(options), *algo);
+        bool output = options.hasArg("--output") ? options.getArg("--output") != "false" : true;
+        size_t iterations = options.hasArg("--iterations") ? std::stoull(options.getArg("--iterations")) : 1;
+
+        for (size_t i = 0; i < iterations; i++)
+        {
+            performanceTestAlgorithm(getPoints(options), *algo, output);
+        }
+        
     }
 
     return 0;
@@ -110,22 +117,26 @@ std::vector<Vector2> getPoints(const programOptions& options, const Renderer* re
     return points;
 }
 
-void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorithm &algo)
+void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorithm &algo, bool output)
 {
     std::vector<Vector2> hull;
     
     auto start = std::chrono::high_resolution_clock::now();
     hull = algo.Execute(points);
     auto finish = std::chrono::high_resolution_clock::now();
-
-    std::cout << "Calculated convex hull of " << points.size() << " points with " << algo.getName() << ":" << std::endl;
-    for (auto point : hull)
-    {
-        std::cout << point.toString() << std::endl;
-    }
-
     auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish-start);
-    std::cout << "Calculation time: " << thousandSeperator(microseconds.count()) << " microseconds" << std::endl;
+
+    if (output)
+    {
+        std::cout << "Calculated convex hull of " << points.size() << " points with " << algo.getName() << ":" << std::endl;
+    
+        for (auto point : hull)
+        {
+            std::cout << point.toString() << std::endl;
+        }
+
+        std::cout << "Calculation time: " << thousandSeperator(microseconds.count()) << " microseconds" << std::endl;
+    }
 
     // Write result to file
     std::string fileName = "results.csv";
