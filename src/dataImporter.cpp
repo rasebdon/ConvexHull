@@ -27,7 +27,7 @@ std::vector<Vector2> DataImporter::ImportPoints(std::string path)
     {
         std::getline(file, line);
         std::istringstream iss(line);
-        int x, y;
+        float x, y;
         if (!(iss >> x >> y)) { break; }
 
         std::cout << "(" << x << ", " << y << ")" << std::endl;
