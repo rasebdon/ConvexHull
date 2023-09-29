@@ -54,7 +54,7 @@ TEST_CASE_TEMPLATE("Construct basic convex hull", T, quickhull, giftwrapping)
     CHECK(lists_contain_equal_elements(expected, calculated));
 }
 
-TEST_CASE_TEMPLATE("Nearly colinear line", T, quickhull, giftwrapping) 
+TEST_CASE_TEMPLATE("High floating point colinear line", T, quickhull, giftwrapping) 
 {
     std::vector<Vector2> points = {
         Vector2(0, 0),
@@ -67,6 +67,31 @@ TEST_CASE_TEMPLATE("Nearly colinear line", T, quickhull, giftwrapping)
 
     std::vector<Vector2> expected = {
         Vector2(0, 0),        
+        Vector2(3, 3),
+    };
+
+    std::unique_ptr<T> algorithm = std::make_unique<T>();
+
+    auto calculated = algorithm->Execute(points);
+
+    CHECK(lists_contain_equal_elements(expected, calculated));
+}
+
+TEST_CASE_TEMPLATE("High floating point not colinear line", T, quickhull, giftwrapping) 
+{
+    std::vector<Vector2> points = {
+        Vector2(0, 0),
+        Vector2(1, 1),
+        Vector2(1.0000005, 1.0000000),
+        Vector2(2, 2),
+        Vector2(2.0000000, 2.0000005),
+        Vector2(3, 3),
+    };
+
+    std::vector<Vector2> expected = {
+        Vector2(0, 0),        
+        Vector2(1.0000005, 1.0000000),
+        Vector2(2.0000000, 2.0000005),
         Vector2(3, 3),
     };
 
