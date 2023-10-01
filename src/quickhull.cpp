@@ -1,5 +1,8 @@
 #include "quickhull.h"
-#include <math.h>
+#include <cmath>
+#include <iostream>
+
+using namespace std;
 
 std::string quickhull::getName() const
 {
@@ -14,56 +17,104 @@ std::vector<Vector2> quickhull::Execute(const std::vector<Vector2> &points) cons
 
     std::vector<Vector2> convexHull;
     // Find the initial leftmost and rightmost points
-    int min_x = 0, max_x = 0;
-    for (size_t i = 1; i < points.size(); i++) {
-        if (points[i].x < points[min_x].x)
-            min_x = i;
-        if (points[i].x > points[max_x].x)
-            max_x = i;
+    Vector2 minX = points[0], maxX = points[0];
+    for (int i = 1; i < points.size(); i++) {
+        if (points[i].x < minX.x)
+            minX = points[i];
+        if (points[i].x > maxX.x)
+            maxX = points[i];
     }
 
-    // Compute the convex hull using the QuickHull algorithm
-    this->quickHull(points, points[min_x], points[max_x], convexHull);
+    convexHull.push_back(minX);
+    convexHull.push_back(maxX);
+
+    // Teilen der Punkte in zwei Hälften
+    std::vector<Vector2> leftSet, rightSet;
+        for (size_t i = 0; i < points.size(); i++) {
+            int sign = crossProductSign(minX, maxX, points[i]);
+            if (sign > 0)
+                leftSet.push_back(points[i]);
+            else if (sign < 0)
+                rightSet.push_back(points[i]);
+        }
+
+    quickHull(leftSet, minX, maxX, convexHull);
+    quickHull(rightSet, maxX, minX, convexHull);
+
+    /*
+    for(auto p : convexHull){
+        cout << p.x << " " << p.y << endl;
+    }
+    */
 
     return convexHull;
 }
 
-double quickhull::findDistance(Vector2 p1, Vector2 p2, Vector2 p) const
-{
-    double numerator = std::abs((p.x - p1.x) * (p2.y - p1.y) - (p.y - p1.y) * (p2.x - p1.x));
-    double denominator = std::sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
-    return numerator / denominator;
+int quickhull::crossProductSign(Vector2 p1, Vector2 p2, Vector2 p3) const {
+    double crossProduct = (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y);
+    return (crossProduct > 0) ? 1 : ((crossProduct < 0) ? -1 : 0);
 }
 
-void quickhull::quickHull(const std::vector<Vector2> &points, Vector2 p1, Vector2 p2, std::vector<Vector2> &result) const
+double quickhull::distanceToLine(Vector2 p, Vector2 l1, Vector2 l2) const {
+    double A = p.x - l1.x;
+    double B = p.y - l1.y;
+    double C = l2.x - l1.x;
+    double D = l2.y - l1.y;
+
+    double dotProduct = A * C + B * D;
+    double len2 = C * C + D * D;
+    
+    return std::abs(dotProduct) / sqrt(len2);
+}
+
+void quickhull::quickHull(const std::vector<Vector2> &points, Vector2 p1, Vector2 p2, std::vector<Vector2> &convexHull) const
 {
-    int index = -1;
+    int farthestIndex = -1;
     double maxDistance = 0.0;
 
     for (size_t i = 0; i < points.size(); i++) {
-        double distance = findDistance(p1, p2, points[i]);
-        if (distance > maxDistance) {
-            maxDistance = distance;
-            index = i;
+        double currentDistance = distanceToLine(points[i], p1, p2);
+        if (currentDistance > maxDistance) {
+            maxDistance = currentDistance;
+            farthestIndex = i;
         }
     }
 
-    if (index == -1) {
-        result.push_back(p1);
-        result.push_back(p2);
+    if (farthestIndex == -1) {
         return;
     }
 
-    Vector2 A = points[index];
-    std::vector<Vector2> leftSet, rightSet;
+    Vector2 farthestPoint = points[farthestIndex];
+        std::vector<Vector2> leftSet, rightSet;
 
-    for (size_t i = 0; i < points.size(); i++) {
-        if (findDistance(p1, A, points[i]) > 0)
-            leftSet.push_back(points[i]);
-        else if (findDistance(A, p2, points[i]) > 0)
-            rightSet.push_back(points[i]);
-    }
+        for (int i = 0; i < points.size(); i++) {
+            int sign = crossProductSign(p1, farthestPoint, points[i]);
+            if (sign > 0)
+                leftSet.push_back(points[i]);
+        }
 
-    quickHull(leftSet, p1, A, result);
-    quickHull(rightSet, A, p2, result);
+        // Rekursiver Aufruf für die linke Menge
+        quickHull(leftSet, p1, farthestPoint, convexHull);
+
+        // Hinzufügen des am weitesten entfernten Punktes zur Hülle, falls er nicht bereits enthalten ist
+        if (!isPointInConvexHull(convexHull, farthestPoint)) {
+            convexHull.push_back(farthestPoint);
+        }
+
+        // Rekursiver Aufruf für die rechte Menge
+        for (int i = 0; i < points.size(); i++) {
+            int sign = crossProductSign(farthestPoint, p2, points[i]);
+            if (sign > 0)
+                rightSet.push_back(points[i]);
+        }
+        quickHull(rightSet, farthestPoint, p2, convexHull);
 }
+
+bool quickhull::isPointInConvexHull(const std::vector<Vector2> &convexHull, Vector2 point) const {
+        for (const Vector2 &p : convexHull) {
+            if (p.x == point.x && p.y == point.y) {
+                return true;
+            }
+        }
+        return false;
+    }
