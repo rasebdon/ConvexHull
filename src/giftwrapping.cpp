@@ -29,13 +29,13 @@ std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points) c
         
         for (int i = 0; i < n; ++i)
         {
-            int cross = Vector2::crossProduct(points[current], points[next], points[i]);
+            float cross = Vector2::crossProduct(points[current], points[next], points[i]);
             // Wenn der i-te Punkt links von der Linie zwischen current und next liegt
-            if (cross > 0) //Richtung bestimmen mit > oder <
+            if (cross > 0.0000001f) //Richtung bestimmen mit > oder <
             {
                 next = i;
             }
-            else if (cross == 0)
+            else if (cross <= 0.0000001f && cross >= -0.0000001f)
             {
                 // Wenn colinear: Punkt mit grüßerer Distanz
                 double dist1 = std::hypot(points[i].x - points[current].x, points[i].y - points[current].y);
