@@ -50,29 +50,5 @@ std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points) c
         current = next;
     } while (current != startPoint);
 
-    //check for duplications
-    std::vector<Vector2> uniquePoints;
-
-    for (const Vector2& point : convexHull)
-    {
-        bool isDuplicate = false;
-
-        // Check if the current point is a duplicate of any point in uniquePoints
-        for (const Vector2& uniquePoint : uniquePoints)
-        {
-            if (point == uniquePoint) 
-            {
-                isDuplicate = true;
-                break;
-            }
-        }
-
-        // If it's not a duplicate, add it to uniquePoints
-        if (!isDuplicate)
-        {
-            uniquePoints.push_back(point);
-        }
-    }
-
-    return uniquePoints;
+    return convexHull;
 }
