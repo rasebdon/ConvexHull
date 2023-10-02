@@ -104,7 +104,7 @@ std::vector<Vector2> getPoints(const programOptions& options, const Renderer* re
         if (options.hasArg("--points"))
             amount = std::stoull(options.getArg("--points"));
 
-        Vector2 bounds = Vector2(1000, 1000);        
+        Vector2 bounds = Vector2(10000, 10000);
         if (renderer != nullptr)
             bounds = renderer->getWindowSize();
 
