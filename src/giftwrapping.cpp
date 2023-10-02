@@ -35,14 +35,17 @@ std::vector<Vector2> giftwrapping::Execute(const std::vector<Vector2> &points) c
             {
                 next = i;
             }
-            else if (cross <= 0.0000001f && cross >= -0.0000001f)
+            else if (cross > -0.0000001f)
             {
                 // Wenn colinear: Punkt mit größerer Distanz
-                double dist1 = std::hypot(points[i].x - points[current].x, points[i].y - points[current].y);
-                double dist2 = std::hypot(points[next].x - points[current].x, points[next].y - points[current].y);
-                if (dist1 > dist2)
+                if((points[i].x > points[next].x && points[i].y > points[next].y) || (points[i].x > points[next].x && points[i].y < points[next].y) || (points[i].x < points[next].x && points[i].y > points[next].y) || (points[i].x < points[next].x && points[i].y < points[next].y))
                 {
-                    next = i;
+                    double dist1 = std::hypot(points[i].x - points[current].x, points[i].y - points[current].y);
+                    double dist2 = std::hypot(points[next].x - points[current].x, points[next].y - points[current].y);
+                    if (dist1 > dist2)
+                    {
+                        next = i;
+                    }
                 }
             }
         }
