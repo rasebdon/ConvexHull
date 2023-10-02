@@ -26,7 +26,7 @@ std::vector<std::vector<Line>> visualGiftwrapping::Execute(const std::vector<Vec
         for (int i = 0; i < n; ++i) {
 
             float cross = Vector2::crossProduct(points[current], points[next], points[i]);
-            // Wenn der i-te Punkt links von der Linie zwischen current und next liegt
+            // Wenn der i-te Punkt rechts von der Linie zwischen current und next liegt
             Line line(points[current], points[i]);
             testLines.push_back(line);
 
@@ -36,7 +36,7 @@ std::vector<std::vector<Line>> visualGiftwrapping::Execute(const std::vector<Vec
             }
             else if (cross <= 0.0000001f && cross >= -0.0000001f)
             {
-                // Wenn colinear: Punkt mit grüßerer Distanz
+                // Wenn colinear: Punkt mit größerer Distanz
                 double dist1 = std::hypot(points[i].x - points[current].x, points[i].y - points[current].y);
                 double dist2 = std::hypot(points[next].x - points[current].x, points[next].y - points[current].y);
                 if (dist1 > dist2)

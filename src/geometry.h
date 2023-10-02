@@ -32,12 +32,6 @@ struct Vector2
     {
         return std::string("(").append(std::to_string(x)).append(", ").append(std::to_string(y)).append(")");
     }
-
-    static bool arePointsColinear(const Vector2& A, const Vector2& B, const Vector2& C, float epsilon = 1e-5)
-    {
-        int crossProduct = Vector2::crossProduct(A, B, C);
-        return std::abs(crossProduct) < epsilon;
-    }
 };
 
 struct Line
