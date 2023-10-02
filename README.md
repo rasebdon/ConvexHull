@@ -12,7 +12,7 @@
 
 # Usage
 
-convexhull.exe --type [performance | visual] --algo [giftwrapping | quickhull] --import [path=NULL] --points [amount=15] --iterations [amount=0] --output [true | false]
+convexhull.exe --type [performance | visual] --algo [giftwrapping | quickhull] --import [path=NULL] --points [amount=15] --iterations [amount=1] --output [true | false]
 
 * --type: The runtime type, must be either performance or visual
 * --algo: The algorithm that will be run, must be either giftwrapping or quickhull

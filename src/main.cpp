@@ -78,6 +78,9 @@ int main(int argc, char **argv)
 
         for (size_t i = 0; i < iterations; i++)
         {
+            if (output)
+                std::cout << "Iteration " << i << std::endl;
+
             performanceTestAlgorithm(getPoints(options), *algo, output);
         }
         
@@ -101,7 +104,7 @@ std::vector<Vector2> getPoints(const programOptions& options, const Renderer* re
         if (options.hasArg("--points"))
             amount = std::stoull(options.getArg("--points"));
 
-        Vector2 bounds = Vector2(1000, 1000);        
+        Vector2 bounds = Vector2(10000, 10000);
         if (renderer != nullptr)
             bounds = renderer->getWindowSize();
 
@@ -121,10 +124,12 @@ void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorith
 {
     std::vector<Vector2> hull;
     
+    if (output) std::cout << "Starting algorithm execution..." << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
     hull = algo.Execute(points);
     auto finish = std::chrono::high_resolution_clock::now();
-    auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish-start);
+    if (output) std::cout << "Algorithm execution finished!" << std::endl;
+    auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
 
     if (output)
     {
