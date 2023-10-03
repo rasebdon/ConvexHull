@@ -16,11 +16,10 @@
 #include "programOptions.h"
 
 void performanceTestAlgorithm(const std::vector<Vector2> &points, const algorithm &algo, bool output);
-void renderAlgorithm(
-    const Renderer &renderer,
-    InputEventHandler &inputEventHandler,
-    const std::vector<Vector2> &points,
-    const visualAlgorithm &visualAlgorithm);
+
+void renderGiftwrapping(const Renderer &renderer, InputEventHandler &inputEventHandler, const std::vector<Vector2> &points, const visualGiftwrapping &giftwrapping);
+void renderQuickhull(const Renderer &renderer, InputEventHandler &inputEventHandler, const std::vector<Vector2> &points, const visualQuickhull &quickhull);
+
 std::vector<Vector2> getPoints(const programOptions& options, const Renderer* renderer = nullptr);
 std::string thousandSeperator(long long num);
 
@@ -56,13 +55,16 @@ int main(int argc, char **argv)
         InputEventHandler inputEventHandler = InputEventHandler();
 
         // Create algorithm
-        std::unique_ptr<visualAlgorithm> visualAlgo;
         if (algorithmType == "giftwrapping")
-            visualAlgo = std::make_unique<visualGiftwrapping>();
+        {
+            auto visualAlgo = std::make_unique<visualGiftwrapping>();
+            renderGiftwrapping(renderer, inputEventHandler, getPoints(options, &renderer), *visualAlgo);
+        }
         else if (algorithmType == "quickhull")
-            visualAlgo = std::make_unique<visualQuickhull>();
-
-        renderAlgorithm(renderer, inputEventHandler, getPoints(options, &renderer), *visualAlgo);
+        {
+            auto visualAlgo = std::make_unique<visualQuickhull>();
+            renderQuickhull(renderer, inputEventHandler, getPoints(options, &renderer), *visualAlgo);
+        }
     }
     else
     {        
@@ -169,11 +171,80 @@ std::string thousandSeperator(long long n)
 	return result;
 }
 
-void renderAlgorithm(
+void renderGiftwrapping(
     const Renderer &renderer,
     InputEventHandler &inputEventHandler,
     const std::vector<Vector2> &points,
-    const visualAlgorithm &visualAlgorithm)
+    const visualGiftwrapping &visualAlgorithm)
+{
+    int i = 0;
+    int drawNumber = -1;
+    int list = 0;
+    int listSize = 0;
+
+    std::vector<std::vector<Line>> lineList = visualAlgorithm.Execute(points);
+
+    int size = lineList.size();
+
+    std::vector<Line> testLines = lineList[list];
+    listSize = testLines.size() - 1;
+    std::vector<Line> hullLines = lineList[size - 1];
+
+    // Render loop
+    while (!inputEventHandler.quit)
+    {
+        // Handle input events
+        inputEventHandler.Handle();
+
+        // Init frame
+        renderer.LimitFramerate(5);
+        renderer.Clear();
+
+        // Draw here with renderer.DrawPointF or renderer.DrawLineF
+        for (std::vector<Vector2>::const_iterator i = points.begin(); i != points.end(); ++i)
+        {
+            Vector2 point = *i;
+            renderer.DrawPointF(point, 5, Color::Black());
+        }
+
+        for (int j = 0; j <= drawNumber; j++)
+        {
+            renderer.DrawLineF(hullLines[j], 2, Color::Red());
+        }
+
+        if (drawNumber <= ((int)hullLines.size()))
+        {
+            for (int k = 0; k <= i; k++)
+            {
+                renderer.DrawLineF(testLines[k], 2, Color::Blue());
+            }
+
+            if (inputEventHandler.keyboard[SDL_KeyCode::SDLK_RIGHT])
+            {
+                if (i >= listSize)
+                {
+                    i = 0;
+                    drawNumber++;
+                    testLines = lineList[++list];
+                    listSize = testLines.size() - 1;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+
+        // Render the prepared frame
+        renderer.Render();
+    }
+}
+
+void renderQuickhull(
+    const Renderer &renderer,
+    InputEventHandler &inputEventHandler,
+    const std::vector<Vector2> &points,
+    const visualQuickhull &visualAlgorithm)
 {
     int i = 0;
     int drawNumber = -1;
