@@ -1,6 +1,6 @@
 lib/*
 out/*
 results.csv
-line_10000*
-line_250000
-line_500000
+testcases/*_10000*
+testcases/*_25000*
+testcases/*_50000*
