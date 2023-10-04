@@ -191,7 +191,7 @@ void renderGiftwrapping(
     std::vector<Line> hullLines = lineList[size - 1];
 
     // Render loop
-    while (!inputEventHandler.quit)
+    while (!inputEventHandler.quit && !inputEventHandler.keyboard[SDL_KeyCode::SDLK_ESCAPE])
     {
         // Handle input events
         inputEventHandler.Handle();
@@ -212,7 +212,7 @@ void renderGiftwrapping(
             renderer.DrawLineF(hullLines[j], 2, Color::Red());
         }
 
-        if (drawNumber <= ((int)hullLines.size()))
+        if (drawNumber < ((int)hullLines.size() - 1))
         {
             for (int k = 0; k <= i; k++)
             {
@@ -254,7 +254,7 @@ void renderQuickhull(
     std::vector<Line> hullLines = lineList[1];
 
     // Render loop
-    while (!inputEventHandler.quit)
+    while (!inputEventHandler.quit && !inputEventHandler.keyboard[SDL_KeyCode::SDLK_ESCAPE])
     {
         // Handle input events
         inputEventHandler.Handle();

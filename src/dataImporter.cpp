@@ -6,7 +6,7 @@
 
 std::vector<Vector2> DataImporter::ImportPoints(std::string path)
 {
-    std::cout << path << std::endl;
+    std::cout << "Importing points:" << path << std::endl;
 
     std::string line;
     std::ifstream file;
