@@ -246,14 +246,11 @@ void renderQuickhull(
     const std::vector<Vector2> &points,
     const visualQuickhull &visualAlgorithm)
 {
-    int i = 0;
-    int drawNumber = -1;
-    int list = 0;
-    int listSize = 0;
+    size_t curTestIndex = 0;
 
     std::vector<std::vector<Line>> lineList = visualAlgorithm.Execute(points);
 
-    int size = lineList.size();
+    size_t size = lineList.size();
 
     std::vector<Line> testLines = lineList[0];
     std::vector<Line> hullLines = lineList[1];
@@ -268,6 +265,9 @@ void renderQuickhull(
         renderer.LimitFramerate(5);
         renderer.Clear();
 
+        if (inputEventHandler.keyboard[SDL_KeyCode::SDLK_RIGHT] && curTestIndex < testLines.size())
+            curTestIndex++;
+
         // Draw here with renderer.DrawPointF or renderer.DrawLineF
         for (std::vector<Vector2>::const_iterator i = points.begin(); i != points.end(); ++i)
         {
@@ -275,14 +275,17 @@ void renderQuickhull(
             renderer.DrawPointF(point, 5, Color::Black());
         }
 
-        for (int i = 0; i <= testLines.size(); i++)
+        for (int i = 0; i < curTestIndex; i++)
         {
             renderer.DrawLineF(testLines[i], 2, Color::Blue());
         }
 
-       for (int i = 0; i <= hullLines.size(); i++)
+        if (curTestIndex == testLines.size())
         {
-            renderer.DrawLineF(hullLines[i], 2, Color::Red());
+            for (int i = 0; i <= hullLines.size(); i++)
+            {
+                renderer.DrawLineF(hullLines[i], 2, Color::Red());
+            }
         }
 
         // Render the prepared frame
