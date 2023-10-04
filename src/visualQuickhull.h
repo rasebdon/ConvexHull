@@ -1,5 +1,6 @@
 #pragma once
 #include "visualAlgorithm.h"
+#include "giftwrapping.h"
 
 class visualQuickhull : public visualAlgorithm
 {

@@ -21,6 +21,9 @@ std::vector<std::vector<Line>> visualQuickhull::Execute(const std::vector<Vector
     convexHull.push_back(minX);
     convexHull.push_back(maxX);
 
+    Line line = Line(minX, maxX);
+    testLines.push_back(line);
+
     // Teilen der Punkte in zwei Hälften
     std::vector<Vector2> leftSet, rightSet;
     for (size_t i = 0; i < points.size(); i++)
@@ -41,6 +44,18 @@ std::vector<std::vector<Line>> visualQuickhull::Execute(const std::vector<Vector
         cout << p.x << " " << p.y << endl;
     }
     */
+
+   giftwrapping gift;
+
+   convexHull = gift.Execute(convexHull);
+
+    for (int i = 0; i < convexHull.size() - 1; ++i)
+    {
+        Line line = Line(convexHull[i], convexHull[i+1]);
+        hullLines.push_back(line);
+    }
+    line = Line(convexHull[0], convexHull[convexHull.size()-1]);
+    hullLines.push_back(line);
     
     lineList.push_back(testLines);
     lineList.push_back(hullLines);
@@ -106,7 +121,12 @@ void visualQuickhull::quickHull(const std::vector<Vector2> &points, const Line &
         convexHull.push_back(farthestPoint);
     }
 
-    // Überprüfen, ob die Linie zur konvexen Hülle gehört
+    Line line1 = Line(line.start, farthestPoint);
+    Line line2 = Line(farthestPoint, line.end);
+    testLines.push_back(line1);
+    testLines.push_back(line2);
+
+    /*// Überprüfen, ob die Linie zur konvexen Hülle gehört
     Line lineBetweenPoints = Line(line.start, farthestPoint);
     if (isLineInConvexHull(lineBetweenPoints, convexHull))
     {
@@ -117,7 +137,7 @@ void visualQuickhull::quickHull(const std::vector<Vector2> &points, const Line &
     {
         // Linie zur TestLines hinzufügen
         testLines.push_back(lineBetweenPoints);
-    }
+    }*/
 
     // Hinzufügen des am weitesten entfernten Punktes zur Hülle, falls er nicht bereits enthalten ist
     if (!isPointInConvexHull(convexHull, farthestPoint))

@@ -255,9 +255,8 @@ void renderQuickhull(
 
     int size = lineList.size();
 
-    std::vector<Line> testLines = lineList[list];
-    listSize = testLines.size() - 1;
-    std::vector<Line> hullLines = lineList[size - 1];
+    std::vector<Line> testLines = lineList[0];
+    std::vector<Line> hullLines = lineList[1];
 
     // Render loop
     while (!inputEventHandler.quit)
@@ -276,32 +275,14 @@ void renderQuickhull(
             renderer.DrawPointF(point, 5, Color::Black());
         }
 
-        for (int j = 0; j <= drawNumber; j++)
+        for (int i = 0; i <= testLines.size(); i++)
         {
-            renderer.DrawLineF(hullLines[j], 2, Color::Red());
+            renderer.DrawLineF(testLines[i], 2, Color::Blue());
         }
 
-        if (drawNumber <= ((int)hullLines.size()))
+       for (int i = 0; i <= hullLines.size(); i++)
         {
-            for (int k = 0; k <= i; k++)
-            {
-                renderer.DrawLineF(testLines[k], 2, Color::Blue());
-            }
-
-            if (inputEventHandler.keyboard[SDL_KeyCode::SDLK_RIGHT])
-            {
-                if (i >= listSize)
-                {
-                    i = 0;
-                    drawNumber++;
-                    testLines = lineList[++list];
-                    listSize = testLines.size() - 1;
-                }
-                else
-                {
-                    i++;
-                }
-            }
+            renderer.DrawLineF(hullLines[i], 2, Color::Red());
         }
 
         // Render the prepared frame
