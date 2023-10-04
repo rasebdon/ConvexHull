@@ -26,14 +26,16 @@ std::vector<Vector2> DataImporter::ImportPoints(std::string path)
     for (size_t i = 0; i < lines; i++)
     {
         std::getline(file, line);
-        std::istringstream iss(line);
-        float x, y;
-        if (!(iss >> x >> y)) { break; }
+        
+        int delimiterIndex = line.find(',');
+        float x = std::stof(line.substr(0, delimiterIndex));
+        float y = std::stof(line.substr(delimiterIndex + 1, (line.size() - delimiterIndex)));
 
-        std::cout << "(" << x << ", " << y << ")" << std::endl;
         points.push_back(Vector2(x, y));
     }
     file.close();
+
+    std::cout << "Imported " << points.size() << " points" << std::endl;
 
     return points;
 }
