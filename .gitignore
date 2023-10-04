@@ -1,3 +1,6 @@
 lib/*
 out/*
 results.csv
+line_10000*
+line_250000
+line_500000
