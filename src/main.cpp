@@ -250,8 +250,6 @@ void renderQuickhull(
 
     std::vector<std::vector<Line>> lineList = visualAlgorithm.Execute(points);
 
-    size_t size = lineList.size();
-
     std::vector<Line> testLines = lineList[0];
     std::vector<Line> hullLines = lineList[1];
 
@@ -275,14 +273,14 @@ void renderQuickhull(
             renderer.DrawPointF(point, 5, Color::Black());
         }
 
-        for (int i = 0; i < curTestIndex; i++)
+        for (size_t i = 0; i < curTestIndex; i++)
         {
             renderer.DrawLineF(testLines[i], 2, Color::Blue());
         }
 
         if (curTestIndex == testLines.size())
         {
-            for (int i = 0; i <= hullLines.size(); i++)
+            for (size_t i = 0; i < hullLines.size(); i++)
             {
                 renderer.DrawLineF(hullLines[i], 2, Color::Red());
             }
